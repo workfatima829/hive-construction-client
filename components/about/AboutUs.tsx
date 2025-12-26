@@ -1,0 +1,100 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import RegistrationForm from "../auth/RegistrationForm";
+
+export default function AboutUs() {
+    const [open, setOpen] = useState(false);
+  return (
+    <main className="bg-background text-foreground">
+      {/* Mission & Vision */}
+      <section className="py-16 px-6 md:px-20 max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold mb-6 text-center">Our Mission & Vision</h2>
+        <p className="text-muted-foreground text-lg text-center max-w-3xl mx-auto leading-relaxed">
+          Hive Construction is a leading residential property development company.
+          We provide secure investment opportunities with transparent profit-sharing, 
+          protecting the original investment even in case of loss. Our platform 
+          allows investors to contribute to land purchases and home construction 
+          while tracking investments, profits, and property status in real-time.
+        </p>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-16 px-6 md:px-20 bg-secondary/10">
+        <h2 className="text-3xl font-bold mb-12 text-center">How Hive Works</h2>
+        <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto text-center">
+          {[
+            { title: "Browse Properties", desc: "View residential homes available for investment with complete details." },
+            { title: "Invest Safely", desc: "Contribute any amount towards land or construction projects securely." },
+            { title: "Track Investments", desc: "Monitor your contribution, share percentage, and profits in real-time." },
+            { title: "Profit & Exit", desc: "Receive profits or original investment according to Hive’s secure policies." },
+          ].map((item) => (
+            <div key={item.title} className="p-6 bg-card rounded-xl shadow-md">
+              <h3 className="font-semibold text-xl mb-2">{item.title}</h3>
+              <p className="text-muted-foreground text-sm">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* User Roles */}
+      <section className="py-16 px-6 md:px-20 max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold mb-12 text-center">User Roles & Benefits</h2>
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Admin */}
+          <div className="p-6 bg-card rounded-xl shadow-md">
+            <h3 className="font-semibold text-xl mb-2">Admin</h3>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
+              <li>Manage property listings and investments</li>
+              <li>Track investor profiles and reports</li>
+              <li>Secure investments via cheques</li>
+              <li>Profit-sharing calculations</li>
+            </ul>
+          </div>
+          {/* Investor */}
+          <div className="p-6 bg-card rounded-xl shadow-md">
+            <h3 className="font-semibold text-xl mb-2">Investor</h3>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
+              <li>Track contribution, profit share, and exit plans</li>
+              <li>Receive notifications about property and profit</li>
+              <li>Update personal profile and password</li>
+            </ul>
+          </div>
+          {/* Visitor */}
+          <div className="p-6 bg-card rounded-xl shadow-md">
+            <h3 className="font-semibold text-xl mb-2">Visitor</h3>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
+              <li>Browse static pages like About, Terms, Privacy</li>
+              <li>Search property listings</li>
+              <li>Register to become an investor</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+        <section className="py-16 text-center">
+      <h2 className="text-3xl font-bold mb-4">Ready to invest with Hive?</h2>
+      <p className="text-muted-foreground mb-6">
+        Join our platform and start contributing to high-quality residential projects today.
+      </p>
+
+      <Button size="lg" variant="default" className="text-white cursor-pointer" style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }} onClick={() => setOpen(true)}>
+        Sign Up Now
+      </Button>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="relative w-[400px] bg-gray-900 p-6 rounded-2xl text-white shadow-2xl">
+            <button
+              onClick={() => setOpen(false)}
+              className="absolute -top-4 -right-4 bg-gray-800 hover:bg-red-500 p-2 rounded-full"
+            >
+              &times;
+            </button>
+            <RegistrationForm />
+          </div>
+        </div>
+      )}
+    </section>
+    </main>
+  );
+}
