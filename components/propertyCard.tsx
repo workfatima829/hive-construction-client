@@ -24,10 +24,6 @@ export default function PropertyCard({ property }: any) {
 
         <p className="text-gray-500">{property.property_location}</p>
 
-        <p className="font-bold text-lg">
-          PKR {property.property_price?.toLocaleString()}
-        </p>
-
         <Button
            className="group text-white px-4 py-4  rounded-lg border-0 transition-all duration-300 hover:scale-105 cursor-pointer"
         style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}

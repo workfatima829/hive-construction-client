@@ -6,9 +6,11 @@ import { registerSchema, RegisterFormValues } from "@/schemas/authSchema";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { useRouter } from "next/navigation";
-import router from "next/router";
+import { useRouter } from "next/navigation";
+
 export default function RegistrationForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -17,7 +19,7 @@ export default function RegistrationForm() {
     resolver: zodResolver(registerSchema),
   });
 
-const onSubmit = async (data: RegisterFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/register`,
@@ -31,24 +33,33 @@ const onSubmit = async (data: RegisterFormValues) => {
       console.error(err);
     }
   };
+  const fields: { name: keyof RegisterFormValues; placeholder: string; type?: string }[] = [
+    { name: "firstName", placeholder: "First Name" },
+    { name: "lastName", placeholder: "Last Name" },
+    { name: "username", placeholder: "Username" },
+    { name: "email", placeholder: "Email", type: "email" },
+    { name: "password", placeholder: "Password", type: "password" },
+  ];
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      <Input placeholder="First Name" {...register("firstName")} />
-      {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
+      {fields.map((field) => (
+        <div key={field.name}>
+          <Input
+            placeholder={field.placeholder}
+            type={field.type || "text"}
+            {...register(field.name)}
+          />
+          {errors[field.name] && (
+            <p className="text-red-500 text-sm">{errors[field.name]?.message}</p>
+          )}
+        </div>
+      ))}
 
-      <Input placeholder="Last Name" {...register("lastName")} />
-      {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
-
-      <Input placeholder="Username" {...register("username")} />
-      {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
-
-      <Input type="email" placeholder="Email" {...register("email")} />
-      {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
-
-      <Input type="password" placeholder="Password" {...register("password")} />
-      {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-
-      <Button type="submit" className="w-20 cursor-pointer bg-white text-black hover:bg-white transition">
+      <Button
+        type="submit"
+        className="w-20 cursor-pointer bg-white text-black hover:bg-white transition"
+      >
         Sign Up
       </Button>
     </form>
