@@ -2,8 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import LoginDropdown from "@/components/auth/LoginDropdown";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+    const router = useRouter();
     return (
         <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0 z-0">
@@ -30,7 +32,7 @@ export default function HeroSection() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <LoginDropdown />
 
-                        <Button
+                        <Button onClick={() => router.push("/properties")}
                             size="lg"
                             variant="outline"
                             className="bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white px-8 py-4 text-lg rounded-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 cursor-pointer"

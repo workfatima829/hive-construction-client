@@ -6,7 +6,8 @@ import { registerSchema, RegisterFormValues } from "@/schemas/authSchema";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+// import { useRouter } from "next/navigation";
+import router from "next/router";
 export default function RegistrationForm() {
   const {
     register,
@@ -16,14 +17,20 @@ export default function RegistrationForm() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = async (data: RegisterFormValues) => {
+const onSubmit = async (data: RegisterFormValues) => {
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/register`, data);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/register`,
+        data
+      );
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      router.push("/welcome");
     } catch (err: any) {
       console.error(err);
     }
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
       <Input placeholder="First Name" {...register("firstName")} />

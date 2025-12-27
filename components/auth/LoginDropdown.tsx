@@ -28,8 +28,6 @@ export default function LoginDropdown() {
       </Button>
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          
-          {/* Modal Card */}
           <div className="relative w-[380px] rounded-2xl bg-gray-900 p-6 text-white shadow-2xl">
             <button
               onClick={closeModal}

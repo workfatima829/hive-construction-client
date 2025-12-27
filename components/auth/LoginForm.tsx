@@ -6,8 +6,10 @@ import { loginSchema, LoginFormValues } from "@/schemas/authSchema";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+    const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -19,14 +21,18 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       const res = await axios.post(
-       `${process.env.NEXT_PUBLIC_API_URL}/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/login`,
         {
           email: data.emailOrUsername,
           username: data.emailOrUsername,
           password: data.password,
         }
       );
+
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      router.push("/welcome");
     } catch (err: any) {
       console.error(err);
     }
