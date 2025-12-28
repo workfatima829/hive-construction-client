@@ -6,6 +6,7 @@ import { Wallet } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import InvestmentsView from "@/components/investmentView";
 import SecurityChequesView from "@/components/SecurityChequesView";
+import CreatePropertyForm from "@/components/createPropertyForm";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -37,8 +38,8 @@ export default function DashboardPage() {
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
         username={name}
-        onLogout={handleLogout}
-      />
+        role={JSON.parse(localStorage.getItem("user") || "{}").role} 
+        onLogout={handleLogout}      />
 
       <main className="flex-1 p-8">
         {activeMenu === "dashboard" && (
@@ -63,6 +64,7 @@ export default function DashboardPage() {
 
         {activeMenu === "investments" && <InvestmentsView />}
          {activeMenu === "cheques" && <SecurityChequesView />}
+         {activeMenu === "create-property" && <CreatePropertyForm />}
 
         {activeMenu === "profile" && (
           <div>
