@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, LogOut, User, Wallet } from "lucide-react";
+import { Home, LogOut, User, Wallet ,FileText} from "lucide-react";
 
 interface SidebarProps {
   activeMenu: string;
@@ -18,6 +18,7 @@ export default function Sidebar({
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "investments", label: "Investments", icon: Wallet },
+     { id: "cheques", label: "Security Cheques", icon: FileText },
     { id: "profile", label: "Profile", icon: User },
   ];
 

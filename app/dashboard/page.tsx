@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Wallet } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import InvestmentsView from "@/components/investmentView";
+import SecurityChequesView from "@/components/SecurityChequesView";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -32,9 +33,9 @@ export default function DashboardPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <Sidebar 
-        activeMenu={activeMenu} 
-        setActiveMenu={setActiveMenu} 
+      <Sidebar
+        activeMenu={activeMenu}
+        setActiveMenu={setActiveMenu}
         username={name}
         onLogout={handleLogout}
       />
@@ -46,10 +47,10 @@ export default function DashboardPage() {
               Welcome, <span className="text-blue-600">{name}</span>
             </h1>
             <p className="text-gray-600 mb-6">Here you can track your investments and property details.</p>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div 
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer" 
+              <div
+                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer"
                 onClick={() => setActiveMenu("investments")}
               >
                 <Wallet size={48} className="text-blue-600 mb-4" />
@@ -61,6 +62,7 @@ export default function DashboardPage() {
         )}
 
         {activeMenu === "investments" && <InvestmentsView />}
+         {activeMenu === "cheques" && <SecurityChequesView />}
 
         {activeMenu === "profile" && (
           <div>

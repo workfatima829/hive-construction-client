@@ -180,7 +180,7 @@ export default function PropertyDetailsPage() {
                                                 <CardContent className="p-5 space-y-3">
                                                     <div className="flex items-center justify-between">
                                                         <span className="text-xs font-semibold text-slate-500">
-                                                            LISTING #{index + 1}
+                                                            Property  
                                                         </span>
                                                         <Badge variant={getStatusVariant(listing.status)} className="font-medium">
                                                             {listing.status}
