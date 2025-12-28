@@ -11,6 +11,7 @@ import CreatePropertyForm from "@/components/createPropertyForm";
 export default function DashboardPage() {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [role, setRole] = useState("");
   const [activeMenu, setActiveMenu] = useState("dashboard");
 
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function DashboardPage() {
 
     const parsedUser = JSON.parse(user);
     setName(parsedUser.username);
+      setRole(parsedUser.role);
   }, [router]);
 
   const handleLogout = () => {
@@ -38,7 +40,7 @@ export default function DashboardPage() {
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
         username={name}
-        role={JSON.parse(localStorage.getItem("user") || "{}").role} 
+          role={role}
         onLogout={handleLogout}      />
 
       <main className="flex-1 p-8">

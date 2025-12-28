@@ -74,7 +74,6 @@ export default function CreatePropertyForm() {
           property_selling_date: "",
         });
 
-        // Hide success message after 30 seconds
         setTimeout(() => setSuccessMsg(""), 30000);
       } else {
         setErrorMsg(data.message || "Failed to create property");
