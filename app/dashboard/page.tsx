@@ -8,6 +8,7 @@ import InvestmentsView from "@/components/investmentView";
 import CreatePropertyForm from "@/components/createPropertyForm";
 import CreateSecurityCheque from "@/components/createSecurityCheque";
 import SecurityChequesViewUser from "@/components/SecurityChequesViewUser";
+import AdminPropertyList from "@/components/adminPropertyList";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -69,6 +70,7 @@ export default function DashboardPage() {
         {activeMenu === "cheques" && <SecurityChequesViewUser />}
         {activeMenu === "create-property" && <CreatePropertyForm />}
         {activeMenu === "create-security-cheque" && <CreateSecurityCheque />}
+        {activeMenu === "manage-properties" && <AdminPropertyList />}
 
         {activeMenu === "profile" && (
           <div>

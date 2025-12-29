@@ -28,7 +28,7 @@ export default function Navbar() {
             >
               Hive Construction
             </Link>
-          </div>
+          </div>  
           <div className="hidden md:flex space-x-8">
             {navLinks.map((link) => (
               <Link

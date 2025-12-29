@@ -1,0 +1,295 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MoreHorizontal, Trash2, Edit } from "lucide-react";
+
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+interface Property {
+    _id: string;
+    property_title: string;
+    property_location: string;
+    property_size: string;
+    listing: {
+        property_type: string;
+        property_price: number;
+        current_market_value: number;
+        status: string;
+        property_selling_date: string;
+    };
+}
+
+export default function ManageProperties() {
+    const [properties, setProperties] = useState<Property[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [editingProperty, setEditingProperty] = useState<Property | null>(null);
+    const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+    const [formData, setFormData] = useState<any>({});
+    const [message, setMessage] = useState("");
+    const [page, setPage] = useState(1);          // Current page
+    const [totalPages, setTotalPages] = useState(1); // Total pages from backend
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+
+    const fetchProperties = async (pageNumber = 1) => {
+        try {
+            const res = await axios.get(`${NEXT_PUBLIC_API_URL}/properties?page=${pageNumber}&limit=9`);
+            setProperties(res.data.data);
+            setPage(res.data.page);
+            setTotalPages(res.data.totalPages); // Assuming backend sends totalPages
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchProperties(page);
+    }, [page]);
+
+    const handleEditClick = (property: Property) => {
+        setEditingProperty(property);
+        setFormData({
+            property_title: property.property_title,
+            property_location: property.property_location,
+            property_size: property.property_size,
+            property_type: property.listing.property_type,
+            property_price: property.listing.property_price,
+            current_market_value: property.listing.current_market_value,
+            status: property.listing.status,
+            property_selling_date: property.listing.property_selling_date,
+        });
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Are you sure you want to delete this property?")) return;
+        try {
+            await axios.delete(`${NEXT_PUBLIC_API_URL}/property/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setMessage("Property deleted successfully");
+            fetchProperties(page); // Refresh current page
+            setTimeout(() => setMessage(""), 3000);
+        } catch (error: any) {
+            console.error(error);
+            setMessage(error.response?.data?.message || "Delete failed");
+            setTimeout(() => setMessage(""), 3000);
+        }
+    };
+
+    const handleSave = async () => {
+        if (!editingProperty) return;
+        setLoading(true);
+        try {
+            await axios.put(
+                `${NEXT_PUBLIC_API_URL}/property/${editingProperty._id}`,
+                formData,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setMessage("Property updated successfully");
+            setEditingProperty(null);
+            fetchProperties(page); // Refresh current page
+            setTimeout(() => setMessage(""), 3000);
+        } catch (error: any) {
+            console.error(error);
+            setMessage(error.response?.data?.message || "Update failed");
+            setTimeout(() => setMessage(""), 3000);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="p-6 max-w-7xl mx-auto">
+            <h1 className="text-2xl font-bold mb-4">Manage Properties</h1>
+            {message && <p className="mb-4 text-green-600">{message}</p>}
+
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Location</TableHead>
+                        <TableHead>Size</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                </TableHeader>
+
+                <TableBody>
+                    {properties.map((prop) => (
+                        <TableRow key={prop._id}>
+                            <TableCell>{prop.property_title}</TableCell>
+                            <TableCell>{prop.property_location}</TableCell>
+                            <TableCell>{prop.property_size}</TableCell>
+                            <TableCell>{prop.listing.property_type}</TableCell>
+                            <TableCell>{prop.listing.property_price}</TableCell>
+                            <TableCell>{prop.listing.status}</TableCell>
+                            <TableCell className="text-right relative">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() =>
+                                        setOpenDropdownId(openDropdownId === prop._id ? null : prop._id)
+                                    }
+                                >
+                                    <MoreHorizontal size={20} />
+                                </Button>
+
+                                {openDropdownId === prop._id && (
+                                    <div className="absolute right-0 mt-2 w-36 bg-white shadow-lg rounded-md border z-10 flex flex-col">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="w-full justify-start px-2 py-1"
+                                            onClick={() => {
+                                                handleEditClick(prop);
+                                                setOpenDropdownId(null);
+                                            }}
+                                        >
+                                            <Edit size={16} className="mr-2" />
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="w-full justify-start px-2 py-1 text-red-600"
+                                            onClick={() => {
+                                                handleDelete(prop._id);
+                                                setOpenDropdownId(null);
+                                            }}
+                                        >
+                                            <Trash2 size={16} className="mr-2" />
+                                            Delete
+                                        </Button>
+                                    </div>
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+
+            <div className="flex justify-between mt-4">
+                <Button
+                    onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={page === 1}
+                >
+                    Previous
+                </Button>
+                <p>Page {page} of {totalPages}</p>
+                <Button
+                    onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={page === totalPages}
+                >
+                    Next
+                </Button>
+            </div>
+
+            <Dialog open={!!editingProperty} onOpenChange={() => setEditingProperty(null)}>
+                <DialogContent className="max-w-lg bg-white  max-h-[534px] !overflow-hidden">
+                    <DialogHeader>
+                        <DialogTitle>Edit Property</DialogTitle>
+                    </DialogHeader>
+
+                    {editingProperty && (
+                        <div className="space-y-4">
+                            <Input
+                                value={formData.property_title}
+                                onChange={(e) => setFormData({ ...formData, property_title: e.target.value })}
+                                placeholder="Property Title"
+                            />
+                            <Input
+                                value={formData.property_location}
+                                onChange={(e) => setFormData({ ...formData, property_location: e.target.value })}
+                                placeholder="Location"
+                            />
+                            <Input
+                                value={formData.property_size}
+                                onChange={(e) => setFormData({ ...formData, property_size: e.target.value })}
+                                placeholder="Size"
+                            />
+
+                            <Select
+                                value={formData.property_type}
+                                onValueChange={(value) => setFormData({ ...formData, property_type: value })}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue>
+                                        {formData.property_type || "Property Type"}
+                                    </SelectValue>
+                                </SelectTrigger>
+                                <SelectContent className="bg-white">
+                                    <SelectItem value="residential">Residential</SelectItem>
+                                    <SelectItem value="commercial">Commercial</SelectItem>
+                                    <SelectItem value="plot">Plot</SelectItem>
+                                </SelectContent>
+                            </Select>
+
+
+                            <Input
+                                type="number"
+                                value={formData.property_price}
+                                onChange={(e) => setFormData({ ...formData, property_price: Number(e.target.value) })}
+                                placeholder="Price"
+                            />
+                            <Input
+                                type="number"
+                                value={formData.current_market_value}
+                                onChange={(e) => setFormData({ ...formData, current_market_value: Number(e.target.value) })}
+                                placeholder="Current Market Value"
+                            />
+                            <Select
+                                value={formData.status}
+                                onValueChange={(value) => setFormData({ ...formData, status: value })}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Status" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white">
+                                    <SelectItem value="available">Available</SelectItem>
+                                    <SelectItem value="sold">Sold</SelectItem>
+                                    <SelectItem value="under_construction">Under Construction</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Input
+                                type="date"
+                                value={formData.property_selling_date?.split("T")[0]}
+                                onChange={(e) => setFormData({ ...formData, property_selling_date: e.target.value })}
+                                placeholder="Selling Date"
+                            />
+                        </div>
+                    )}
+
+                    <DialogFooter className="flex gap-2 mt-4">
+                        <Button onClick={handleSave} disabled={loading}>
+                            {loading ? "Saving..." : "Save"}
+                        </Button>
+                        <Button variant="outline" onClick={() => setEditingProperty(null)}>
+                            Cancel
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </div>
+    );
+}
