@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, LogOut, User, Wallet, FileText ,PlusCircle  } from "lucide-react";
+import { Home, LogOut, User, Wallet, FileText, PlusCircle } from "lucide-react";
 
 interface SidebarProps {
   activeMenu: string;
@@ -25,11 +25,13 @@ export default function Sidebar({
   ];
   if (role === "admin") {
     menuItems.splice(2, 0, { id: "create-property", label: "Create Property", icon: PlusCircle });
+    menuItems.splice(3, 0, { id: "manage-properties", label: "Manage Properties", icon: Home });
+    menuItems.splice(2, 0, { id: "create-security-cheque", label: "Create SC", icon: PlusCircle });
   }
 
 
   return (
-    <aside className="w-64 bg-white shadow-lg h-screen sticky top-0">
+    <aside className="w-64 bg-white shadow-lg h-auto top-0">
       <div className="p-6 border-b">
         <h2 className="text-2xl font-bold text-gray-800">Investor Portal</h2>
         <p className="text-sm text-gray-600 mt-1">Welcome, {username}</p>
@@ -43,8 +45,8 @@ export default function Sidebar({
               key={item.id}
               onClick={() => setActiveMenu(item.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-all ${activeMenu === item.id
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-gray-100"
+                ? "bg-blue-600 text-white"
+                : "text-gray-700 hover:bg-gray-100"
                 }`}
             >
               <Icon size={20} />

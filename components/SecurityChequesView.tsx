@@ -65,7 +65,6 @@ export default function SecurityChequesView() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
           My Security Cheques
@@ -74,15 +73,12 @@ export default function SecurityChequesView() {
           View all security cheques issued against your investments
         </p>
       </div>
-
-      {/* Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {cheques.map((cheque) => (
           <div
             key={cheque._id}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all border overflow-hidden"
           >
-            {/* Card Header */}
             <div className="bg-gradient-to-br from-emerald-500 to-emerald-600 p-5 text-white">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -110,7 +106,6 @@ export default function SecurityChequesView() {
               </p>
             </div>
 
-            {/* Card Body */}
             <div className="p-5 space-y-3 text-sm text-gray-700">
               <div className="flex justify-between">
                 <span className="text-gray-500">Cheque No</span>

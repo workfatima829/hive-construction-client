@@ -7,6 +7,7 @@ import Sidebar from "@/components/sidebar";
 import InvestmentsView from "@/components/investmentView";
 import SecurityChequesView from "@/components/SecurityChequesView";
 import CreatePropertyForm from "@/components/createPropertyForm";
+import CreateSecurityCheque from "@/components/createSecurityCheque";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function DashboardPage() {
 
     const parsedUser = JSON.parse(user);
     setName(parsedUser.username);
-      setRole(parsedUser.role);
+    setRole(parsedUser.role);
   }, [router]);
 
   const handleLogout = () => {
@@ -40,8 +41,8 @@ export default function DashboardPage() {
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
         username={name}
-          role={role}
-        onLogout={handleLogout}      />
+        role={role}
+        onLogout={handleLogout} />
 
       <main className="flex-1 p-8">
         {activeMenu === "dashboard" && (
@@ -65,8 +66,9 @@ export default function DashboardPage() {
         )}
 
         {activeMenu === "investments" && <InvestmentsView />}
-         {activeMenu === "cheques" && <SecurityChequesView />}
-         {activeMenu === "create-property" && <CreatePropertyForm />}
+        {activeMenu === "cheques" && <SecurityChequesView />}
+        {activeMenu === "create-property" && <CreatePropertyForm />}
+        {activeMenu === "create-security-cheque" && <CreateSecurityCheque />}
 
         {activeMenu === "profile" && (
           <div>

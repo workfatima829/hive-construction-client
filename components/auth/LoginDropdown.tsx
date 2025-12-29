@@ -27,11 +27,11 @@ export default function LoginDropdown() {
         <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
       </Button>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="relative w-[380px] rounded-2xl bg-gray-900 p-6 text-white shadow-2xl">
             <button
               onClick={closeModal}
-              className="absolute -top-4 -right-4 bg-gray-800 hover:bg-red-500 text-white p-2 rounded-full shadow-lg transition"
+              className="absolute -top-4 -right-4 bg-gray-800 hover:bg-red-500 text-white p-2 rounded-full shadow-lg transition cursor-pointer"
             >
               <X size={18} />
             </button>

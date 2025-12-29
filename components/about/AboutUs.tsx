@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import RegistrationForm from "../auth/RegistrationForm";
-
+import {X } from "lucide-react";
 export default function AboutUs() {
   const [open, setOpen] = useState(false);
 
@@ -107,12 +107,12 @@ export default function AboutUs() {
         {open && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             <div className="relative w-[400px] bg-gray-900 p-6 rounded-2xl text-white shadow-2xl">
-              <button
-                onClick={() => setOpen(false)}
-                className="absolute -top-4 -right-4 bg-gray-800 hover:bg-red-500 p-2 rounded-full"
-              >
-                &times;
-              </button>
+                <button
+             onClick={() => setOpen(false)}
+              className="absolute -top-4 -right-4 bg-gray-800 hover:bg-red-500 text-white p-2 rounded-full shadow-lg transition cursor-pointer"
+            >
+              <X size={18} />
+            </button>
               <RegistrationForm />
             </div>
           </div>
