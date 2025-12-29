@@ -91,6 +91,7 @@ export default function CreatePropertyForm() {
   };
 
   return (
+  
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-12 px-4">
       <Card className="max-w-4xl mx-auto shadow-xl border-0">
         <CardHeader className="space-y-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">

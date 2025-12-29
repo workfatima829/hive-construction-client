@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { Wallet } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import InvestmentsView from "@/components/investmentView";
-import SecurityChequesView from "@/components/SecurityChequesView";
 import CreatePropertyForm from "@/components/createPropertyForm";
 import CreateSecurityCheque from "@/components/createSecurityCheque";
+import SecurityChequesViewUser from "@/components/SecurityChequesViewUser";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -66,7 +66,7 @@ export default function DashboardPage() {
         )}
 
         {activeMenu === "investments" && <InvestmentsView />}
-        {activeMenu === "cheques" && <SecurityChequesView />}
+        {activeMenu === "cheques" && <SecurityChequesViewUser />}
         {activeMenu === "create-property" && <CreatePropertyForm />}
         {activeMenu === "create-security-cheque" && <CreateSecurityCheque />}
 
