@@ -10,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -20,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MoreHorizontal, Trash2, Edit } from "lucide-react";
+import { MoreHorizontal, Trash2, Edit} from "lucide-react";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -45,8 +46,8 @@ export default function ManageProperties() {
     const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
     const [formData, setFormData] = useState<any>({});
     const [message, setMessage] = useState("");
-    const [page, setPage] = useState(1);          // Current page
-    const [totalPages, setTotalPages] = useState(1); // Total pages from backend
+    const [page, setPage] = useState(1);          
+    const [totalPages, setTotalPages] = useState(1);
 
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
 
@@ -55,7 +56,7 @@ export default function ManageProperties() {
             const res = await axios.get(`${NEXT_PUBLIC_API_URL}/properties?page=${pageNumber}&limit=9`);
             setProperties(res.data.data);
             setPage(res.data.page);
-            setTotalPages(res.data.totalPages); // Assuming backend sends totalPages
+            setTotalPages(res.data.totalPages); 
         } catch (error) {
             console.error(error);
         }
@@ -116,7 +117,6 @@ export default function ManageProperties() {
             setLoading(false);
         }
     };
-
     return (
         <div className="p-6 max-w-7xl mx-auto">
             <h1 className="text-2xl font-bold mb-4">Manage Properties</h1>
@@ -291,5 +291,7 @@ export default function ManageProperties() {
                 </DialogContent>
             </Dialog>
         </div>
+
+       
     );
 }

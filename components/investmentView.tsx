@@ -5,8 +5,10 @@ import { Wallet } from "lucide-react";
 import { Investment } from "@/types/types";
 import { apiClient } from "@/lib/api";
 import InvestmentCard from "./investmentCard";
-
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 export default function InvestmentsView() {
+    const router = useRouter();
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -53,10 +55,18 @@ export default function InvestmentsView() {
 
   return (
     <div>
-      <div className="mb-8">
+     <div className="flex items-center justify-between mb-8">
+       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">My Investments</h1>
         <p className="text-gray-600">Track and manage your property investments</p>
       </div>
+      <div>
+        <Button  onClick={() => router.push("/create-investment")}
+         className="group text-white px-8 py-4  rounded-lg border-0 transition-all duration-300 hover:scale-105 cursor-pointer"
+        style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}
+        >Invest in New Property</Button>
+      </div>
+     </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
