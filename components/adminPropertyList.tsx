@@ -213,18 +213,15 @@ export default function ManageProperties() {
 
                     {editingProperty && (
                         <div className="space-y-4">
-                            <Input
-                                value={formData.property_title}
+                            <Input value={formData.property_title}
                                 onChange={(e) => setFormData({ ...formData, property_title: e.target.value })}
                                 placeholder="Property Title"
                             />
-                            <Input
-                                value={formData.property_location}
+                            <Input  value={formData.property_location}
                                 onChange={(e) => setFormData({ ...formData, property_location: e.target.value })}
                                 placeholder="Location"
                             />
-                            <Input
-                                value={formData.property_size}
+                            <Input value={formData.property_size}
                                 onChange={(e) => setFormData({ ...formData, property_size: e.target.value })}
                                 placeholder="Size"
                             />

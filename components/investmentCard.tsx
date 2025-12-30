@@ -2,11 +2,14 @@
 
 import { Building2, TrendingUp, Calendar, DollarSign, MapPin } from "lucide-react";
 import { Investment } from "@/types/types";
+
 interface InvestmentCardProps {
   investment: Investment;
 }
 
 export default function InvestmentCard({ investment }: InvestmentCardProps) {
+  const property = investment.propertyId;
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active": return "bg-green-100 text-green-700";
@@ -29,20 +32,29 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
     ? ((investment.listing.current_market_value - investment.listing.property_price) / investment.listing.property_price * 100).toFixed(2)
     : 0;
 
+  if (!property) {
+    return (
+      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+        <p className="text-red-700">Property data not available</p>
+        <p className="text-xs text-red-600 mt-1">Investment ID: {investment._id}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow p-6 border border-gray-200">
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1">
           <h3 className="text-xl font-bold text-gray-800 mb-2">
-            {investment.property.property_title}
+            {property.property_title}
           </h3>
           <div className="flex items-center gap-2 text-gray-600 mb-1">
             <MapPin size={16} />
-            <span className="text-sm">{investment.property.property_location}</span>
+            <span className="text-sm">{property.property_location}</span>
           </div>
           <div className="flex items-center gap-2 text-gray-600">
             <Building2 size={16} />
-            <span className="text-sm">{investment.property.property_size}</span>
+            <span className="text-sm">{property.property_size} sq ft</span>
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -51,7 +63,7 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
           </span>
           {investment.listing && (
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPropertyStatusColor(investment.listing.status)}`}>
-              {investment.listing.status.toUpperCase()}
+              {investment.listing.status.replace('_', ' ').toUpperCase()}
             </span>
           )}
         </div>
@@ -102,7 +114,7 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
           <div>
             <p className="text-sm text-gray-600 mb-1">Investment Date</p>
             <p className="font-semibold text-gray-800">
-              {new Date(investment.investment_date).toLocaleDateString()}
+              {new Date(investment.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
@@ -110,7 +122,7 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
 
       <div className="flex items-center gap-2 text-gray-500 text-sm pt-4 border-t">
         <Calendar size={16} />
-        <span>Invested on {new Date(investment.investment_date).toLocaleDateString('en-US', { 
+        <span>Invested on {new Date(investment.createdAt).toLocaleDateString('en-US', { 
           year: 'numeric', 
           month: 'long', 
           day: 'numeric' 
