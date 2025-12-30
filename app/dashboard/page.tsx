@@ -9,6 +9,7 @@ import CreatePropertyForm from "@/components/createPropertyForm";
 import CreateSecurityCheque from "@/components/createSecurityCheque";
 import SecurityChequesViewUser from "@/components/SecurityChequesViewUser";
 import AdminPropertyList from "@/components/adminPropertyList";
+import PendingRequestsPage from "@/components/pendingRequest";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -70,6 +71,7 @@ export default function DashboardPage() {
         {activeMenu === "cheques" && <SecurityChequesViewUser />}
         {activeMenu === "create-property" && <CreatePropertyForm />}
         {activeMenu === "create-security-cheque" && <CreateSecurityCheque />}
+        {activeMenu === "pending-requests" && <PendingRequestsPage/>}
         {activeMenu === "manage-properties" && <AdminPropertyList />}
 
         {activeMenu === "profile" && (

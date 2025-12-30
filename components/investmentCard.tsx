@@ -20,6 +20,7 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
     switch (status) {
       case "sold": return "bg-purple-100 text-purple-700";
       case "available": return "bg-green-100 text-green-700";
+      case "under_construction": return "bg-green-100 text-green-700";
       default: return "bg-gray-100 text-gray-700";
     }
   };

@@ -30,6 +30,7 @@ export default function Sidebar({
     menuItems.splice(1, 0, { id: "create-property", label: "Create Property", icon: PlusCircle });
     menuItems.splice(2, 0, { id: "manage-properties", label: "Manage Properties", icon: Home });
     menuItems.splice(3, 0, { id: "create-security-cheque", label: "Create SC", icon: PlusCircle });
+    menuItems.splice(4, 0, { id: "pending-requests", label: "Pending Requests", icon: FileText })
   }
 
   return (

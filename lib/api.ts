@@ -33,11 +33,12 @@ export const apiClient = {
     });
     return response.json();
   },
-
-  delete: async (endpoint: string) => {
+  
+  delete: async (endpoint: string, data: any) => {
     const response = await fetch(`${API_URL}${endpoint}`, {
       method: "DELETE",
       headers: getAuthHeaders(),
+      body: JSON.stringify(data),
     });
     return response.json();
   },

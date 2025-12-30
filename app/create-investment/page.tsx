@@ -5,31 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { apiClient } from "@/lib/api";
 import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { DollarSign, Building2 } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
-
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction, } from "@/components/ui/alert-dialog";
 export default function NewInvestmentPage() {
   const router = useRouter();
 
   const [propertyId, setPropertyId] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
@@ -62,12 +47,12 @@ export default function NewInvestmentPage() {
     try {
       setLoading(true);
 
-      await apiClient.post("/investment", {
-        property_Id: propertyId,
+      await apiClient.post("/investment-request", {
+        propertyId: propertyId,
         amount: Number(amount),
       });
 
-      setAlertMessage("Investment created successfully...");
+      setAlertMessage("Investment pending state...");
       setShowAlert(true);
 
       setPropertyId("");
@@ -165,7 +150,7 @@ export default function NewInvestmentPage() {
         </div>
 
         {/* AlertDialog */}
-        <AlertDialog  open={showAlert} onOpenChange={setShowAlert}>
+        <AlertDialog open={showAlert} onOpenChange={setShowAlert}>
           <AlertDialogContent className="bg-white">
             <AlertDialogHeader>
               <AlertDialogTitle>Notice</AlertDialogTitle>
