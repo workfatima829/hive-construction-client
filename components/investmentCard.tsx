@@ -1,36 +1,89 @@
 "use client";
 
-import { Building2, TrendingUp, Calendar, DollarSign, MapPin } from "lucide-react";
+import { Building2, Trash2, TrendingUp, Calendar, DollarSign, MapPin } from "lucide-react";
 import { Investment } from "@/types/types";
+import { apiClient } from "@/lib/api";
+import { useState } from "react";
 
 interface InvestmentCardProps {
   investment: Investment;
+  onWithdrawSuccess?: () => void;
 }
 
-export default function InvestmentCard({ investment }: InvestmentCardProps) {
+export default function InvestmentCard({ investment, onWithdrawSuccess }: InvestmentCardProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
   const property = investment.propertyId;
+
+  const handleWithdraw = async () => {
+    const confirmWithdraw = confirm(
+      "Are you sure you want to withdraw this investment? This action cannot be undone."
+    );
+
+    if (!confirmWithdraw) return;
+
+    setIsDeleting(true);
+    
+    try {
+      const response = await apiClient.delete(`/investment/${investment._id}`, {});
+      const message = response?.message || response?.data?.message || "Investment withdrawn successfully";
+      
+      alert(message);
+      if (onWithdrawSuccess) {
+        onWithdrawSuccess();
+      } else {
+        window.location.reload();
+      }
+      
+    } catch (error: any) {
+      let errorMessage = "Failed to withdraw investment. Please try again.";
+      if (error?.response?.message) {
+        errorMessage = error.response.message;
+      } else if (error?.message) {
+        errorMessage = error.message;
+      }
+      alert(errorMessage);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "active": return "bg-green-100 text-green-700";
-      case "withdrawn": return "bg-yellow-100 text-yellow-700";
-      case "completed": return "bg-blue-100 text-blue-700";
-      default: return "bg-gray-100 text-gray-700";
+      case "active": 
+        return "bg-green-100 text-green-700";
+      case "withdrawn": 
+        return "bg-yellow-100 text-yellow-700";
+      case "completed": 
+        return "bg-blue-100 text-blue-700";
+      default: 
+        return "bg-gray-100 text-gray-700";
     }
   };
 
   const getPropertyStatusColor = (status: string) => {
     switch (status) {
-      case "sold": return "bg-purple-100 text-purple-700";
-      case "available": return "bg-green-100 text-green-700";
-      case "under_construction": return "bg-green-100 text-green-700";
-      default: return "bg-gray-100 text-gray-700";
+      case "sold": 
+        return "bg-purple-100 text-purple-700";
+      case "available": 
+        return "bg-green-100 text-green-700";
+      case "under_construction": 
+        return "bg-green-100 text-green-700";
+      default: 
+        return "bg-gray-100 text-gray-700";
     }
   };
 
-  const potentialReturn = investment.listing 
-    ? ((investment.listing.current_market_value - investment.listing.property_price) / investment.listing.property_price * 100).toFixed(2)
-    : 0;
+  const calculatePotentialReturn = () => {
+    if (!investment.listing) return "0.00";
+    
+    const { current_market_value, property_price } = investment.listing;
+    if (!current_market_value || !property_price) return "0.00";
+    
+    const returnPercentage = ((current_market_value - property_price) / property_price * 100);
+    return returnPercentage.toFixed(2);
+  };
+
+  const potentialReturn = calculatePotentialReturn();
 
   if (!property) {
     return (
@@ -61,6 +114,22 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(investment.status)}`}>
             {investment.status.toUpperCase()}
           </span>
+          
+          {investment.status === "active" && (
+            <button
+              onClick={handleWithdraw}
+              disabled={isDeleting}
+              className="p-2 rounded-full hover:bg-red-100 text-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Withdraw Investment"
+            >
+              {isDeleting ? (
+                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600 inline-block"></span>
+              ) : (
+                <Trash2 size={16} />
+              )}
+            </button>
+          )}
+          
           {investment.listing && (
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPropertyStatusColor(investment.listing.status)}`}>
               {investment.listing.status.replace('_', ' ').toUpperCase()}

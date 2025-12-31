@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MoreHorizontal, Trash2, Edit} from "lucide-react";
+import { MoreHorizontal, Trash2, Edit, TrendingUp } from "lucide-react";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -46,7 +46,7 @@ export default function ManageProperties() {
     const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
     const [formData, setFormData] = useState<any>({});
     const [message, setMessage] = useState("");
-    const [page, setPage] = useState(1);          
+    const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
@@ -56,7 +56,7 @@ export default function ManageProperties() {
             const res = await axios.get(`${NEXT_PUBLIC_API_URL}/properties?page=${pageNumber}&limit=9`);
             setProperties(res.data.data);
             setPage(res.data.page);
-            setTotalPages(res.data.totalPages); 
+            setTotalPages(res.data.totalPages);
         } catch (error) {
             console.error(error);
         }
@@ -80,6 +80,30 @@ export default function ManageProperties() {
         });
     };
 
+
+    const handleProfitDistribute = async (propertyId: string) => {
+        if (!confirm("Are you sure you want to distribute profit for this property?")) return;
+        try {
+            const res = await axios.post(
+                `${NEXT_PUBLIC_API_URL}/profitDistribution/${propertyId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setMessage(res.data.message || "Profit distributed successfully");
+            setTimeout(() => setMessage(""), 5000);
+        } catch (error: any) {
+            console.error(error);
+            setMessage(error.response?.data?.message || "Profit distribution failed");
+            setTimeout(() => setMessage(""), 5000);
+        }
+    };
+
+
     const handleDelete = async (id: string) => {
         if (!confirm("Are you sure you want to delete this property?")) return;
         try {
@@ -87,12 +111,12 @@ export default function ManageProperties() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setMessage("Property deleted successfully");
-            fetchProperties(page); // Refresh current page
+            fetchProperties(page);
             setTimeout(() => setMessage(""), 3000);
         } catch (error: any) {
             console.error(error);
             setMessage(error.response?.data?.message || "Delete failed");
-            setTimeout(() => setMessage(""), 3000);
+            setTimeout(() => setMessage(""), 5000);
         }
     };
 
@@ -107,12 +131,12 @@ export default function ManageProperties() {
             );
             setMessage("Property updated successfully");
             setEditingProperty(null);
-            fetchProperties(page); // Refresh current page
-            setTimeout(() => setMessage(""), 3000);
+            fetchProperties(page); 
+            setTimeout(() => setMessage(""), 5000);
         } catch (error: any) {
             console.error(error);
             setMessage(error.response?.data?.message || "Update failed");
-            setTimeout(() => setMessage(""), 3000);
+            setTimeout(() => setMessage(""), 5000);
         } finally {
             setLoading(false);
         }
@@ -172,6 +196,18 @@ export default function ManageProperties() {
                                         <Button
                                             variant="ghost"
                                             size="sm"
+                                            className="w-full justify-start px-2 py-1 text-purple-600"
+                                            onClick={() => {
+                                                handleProfitDistribute(prop._id);
+                                                setOpenDropdownId(null);
+                                            }}
+                                        >
+                                            <TrendingUp size={16} className="mr-2" />
+                                            Profit Distribute
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
                                             className="w-full justify-start px-2 py-1 text-red-600"
                                             onClick={() => {
                                                 handleDelete(prop._id);
@@ -181,6 +217,7 @@ export default function ManageProperties() {
                                             <Trash2 size={16} className="mr-2" />
                                             Delete
                                         </Button>
+
                                     </div>
                                 )}
                             </TableCell>
@@ -217,7 +254,7 @@ export default function ManageProperties() {
                                 onChange={(e) => setFormData({ ...formData, property_title: e.target.value })}
                                 placeholder="Property Title"
                             />
-                            <Input  value={formData.property_location}
+                            <Input value={formData.property_location}
                                 onChange={(e) => setFormData({ ...formData, property_location: e.target.value })}
                                 placeholder="Location"
                             />
@@ -289,6 +326,6 @@ export default function ManageProperties() {
             </Dialog>
         </div>
 
-       
+
     );
 }

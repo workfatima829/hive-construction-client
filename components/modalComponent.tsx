@@ -6,6 +6,7 @@ import { apiClient } from "@/lib/api";
 
 interface InvestmentRequestModel {
   _id: string;
+  investor_Id: string;
   property_Id: string;
   amount: number;
   status?: string;

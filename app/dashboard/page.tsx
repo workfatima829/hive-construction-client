@@ -71,7 +71,7 @@ export default function DashboardPage() {
         {activeMenu === "cheques" && <SecurityChequesViewUser />}
         {activeMenu === "create-property" && <CreatePropertyForm />}
         {activeMenu === "create-security-cheque" && <CreateSecurityCheque />}
-        {activeMenu === "pending-requests" && <PendingRequestsPage/>}
+        {activeMenu === "pending-requests" && <PendingRequestsPage />}
         {activeMenu === "manage-properties" && <AdminPropertyList />}
 
         {activeMenu === "profile" && (

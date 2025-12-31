@@ -2,7 +2,7 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Home, LogOut, User, Wallet, FileText, PlusCircle } from "lucide-react";
+import { Home,LogOut,TrendingUp, User, Wallet, FileText, PlusCircle } from "lucide-react";
 
 interface SidebarProps {
   activeMenu: string;
@@ -31,6 +31,7 @@ export default function Sidebar({
     menuItems.splice(2, 0, { id: "manage-properties", label: "Manage Properties", icon: Home });
     menuItems.splice(3, 0, { id: "create-security-cheque", label: "Create SC", icon: PlusCircle });
     menuItems.splice(4, 0, { id: "pending-requests", label: "Pending Requests", icon: FileText })
+    menuItems.splice(5, 0, { id: "profit-distribution", label: "Profit Distribution", icon: TrendingUp });
   }
 
   return (
