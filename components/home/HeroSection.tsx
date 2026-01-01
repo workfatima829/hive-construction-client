@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import LoginDropdown from "@/components/auth/LoginDropdown";
 import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
@@ -30,7 +29,14 @@ export default function HeroSection() {
                     <div className="w-40 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full mb-6 mx-auto" />
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <LoginDropdown />
+                        <Button
+                            size="lg"
+                            onClick={() => router.push("/auth")}
+                            className="group text-white px-8 py-4 text-lg rounded-lg border-0 transition-all duration-300 hover:scale-105 cursor-pointer"
+                            style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}
+                        >
+                            Login
+                        </Button>
 
                         <Button onClick={() => router.push("/properties")}
                             size="lg"

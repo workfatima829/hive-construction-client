@@ -7,7 +7,7 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-
+import Cookies from "js-cookie";
 export default function RegistrationForm() {
   const router = useRouter();
 
@@ -25,10 +25,9 @@ export default function RegistrationForm() {
         `${process.env.NEXT_PUBLIC_API_URL}/register`,
         data
       );
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      router.push("/welcome");
+Cookies.set("token", res.data.token);
+Cookies.set("user", JSON.stringify(res.data.user));
+           router.push("/dashboard");
     } catch (err: any) {
       console.error(err);
     }
@@ -42,26 +41,30 @@ export default function RegistrationForm() {
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-      {fields.map((field) => (
-        <div key={field.name}>
-          <Input
-            placeholder={field.placeholder}
-            type={field.type || "text"}
-            {...register(field.name)}
-          />
-          {errors[field.name] && (
-            <p className="text-red-500 text-sm">{errors[field.name]?.message}</p>
-          )}
-        </div>
-      ))}
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+  {fields.map((field) => (
+    <div key={field.name}>
+      <Input
+        placeholder={field.placeholder}
+        type={field.type || "text"}
+        {...register(field.name)}
+        className="h-11"
+      />
+      {errors[field.name] && (
+        <p className="text-red-500 text-xs mt-1">
+          {errors[field.name]?.message}
+        </p>
+      )}
+    </div>
+  ))}
 
-      <Button
-        type="submit"
-        className="w-20 cursor-pointer bg-white text-black hover:bg-white transition"
-      >
-        Sign Up
-      </Button>
-    </form>
+  <Button
+    type="submit"
+    className="w-full h-11 rounded-lg bg-gradient-to-r from-black to-gray-800 text-white hover:opacity-90"
+  >
+    Create Account
+  </Button>
+</form>
+
   );
 }

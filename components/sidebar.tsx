@@ -1,76 +1,80 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { Home,LogOut,TrendingUp, User, Wallet, FileText, PlusCircle } from "lucide-react";
+import {  Home,  Wallet,  FileText, User,  PlusCircle, LogOut,} from "lucide-react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
+  role: string;
   activeMenu: string;
   setActiveMenu: (menu: string) => void;
-  username: string;
-  role: string;
-  onLogout: () => void;
 }
 
 export default function Sidebar({
+  role,
   activeMenu,
   setActiveMenu,
-  username,
-  role,
-  onLogout
 }: SidebarProps) {
-  const menuItems = [
+    const router = useRouter();
+  const baseMenu = [
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "investments", label: "Investments", icon: Wallet },
     { id: "cheques", label: "Security Cheques", icon: FileText },
     { id: "profile", label: "Profile", icon: User },
   ];
 
-  if (role === "admin") {
-    menuItems.splice(1, 0, { id: "create-property", label: "Create Property", icon: PlusCircle });
-    menuItems.splice(2, 0, { id: "manage-properties", label: "Manage Properties", icon: Home });
-    menuItems.splice(3, 0, { id: "create-security-cheque", label: "Create SC", icon: PlusCircle });
-    menuItems.splice(4, 0, { id: "pending-requests", label: "Pending Requests", icon: FileText })
-    menuItems.splice(5, 0, { id: "profit-distribution", label: "Profit Distribution", icon: TrendingUp });
-  }
+  const adminMenu = [
+    { id: "create-property", label: "Create Property", icon: PlusCircle },
+    { id: "manage-properties", label: "Manage Properties", icon: Home },
+    { id: "pending-requests", label: "Pending Requests", icon: FileText },
+  ];
+
+  const menuItems =
+    role === "admin"
+      ? [baseMenu[0], ...adminMenu, ...baseMenu.slice(1)]
+      : baseMenu;
+
+  const logout = () => {
+     Cookies.remove("token");
+    Cookies.remove("role");
+    Cookies.remove("username");
+    router.push("/");
+  };
 
   return (
-    <aside className="w-64 bg-white border-r shadow-lg flex flex-col h-screen">
-      <div className="p-6 border-b">
-        <h2 className="text-2xl font-bold text-gray-900">Investor Portal</h2>
-        <p className="text-sm text-gray-500 mt-1">Welcome, {username}</p>
-      </div>
-      <ScrollArea className="flex-1 p-4">
-        <nav className="flex flex-col gap-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Button
-                key={item.id}
-                variant={activeMenu === item.id ? "default" : "ghost"}
-                size="sm"
-                className="justify-start w-full gap-3 rounded-lg"
-                onClick={() => setActiveMenu(item.id)}
-              >
-                <Icon size={20} />
-                <span className="font-medium">{item.label}</span>
-              </Button>
-            );
-          })}
-        </nav>
-      </ScrollArea>
+    <aside className="w-64 h-screen bg-slate-900 text-white p-4">
+      <nav className="space-y-1">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeMenu === item.id;
 
-   <div className="p-4 border-t mt-auto">
-  <Button
-    variant="destructive"
-    size="sm"
-    className="text-black justify-start w-full gap-3 rounded-lg"
-    onClick={onLogout}
-  >
-    <LogOut size={20} />
-    Logout
-  </Button>
-</div>
+          return (
+            <Button
+              key={item.id}
+              variant="ghost"
+              onClick={() => setActiveMenu(item.id)}
+              className={`w-full justify-start ${
+                isActive
+                  ? "bg-slate-800 text-white"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
+              }`}
+            >
+              <Icon className="mr-2" size={18} />
+              {item.label}
+            </Button>
+          );
+        })}
+      </nav>
+
+      <Button
+        variant="ghost"
+        className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-950 mt-8"
+        onClick={logout}
+      >
+        <LogOut className="mr-2" size={18} />
+        Logout
+      </Button>
     </aside>
   );
 }

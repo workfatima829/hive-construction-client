@@ -2,83 +2,130 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Wallet } from "lucide-react";
 import Sidebar from "@/components/sidebar";
 import InvestmentsView from "@/components/investmentView";
 import CreatePropertyForm from "@/components/createPropertyForm";
-import CreateSecurityCheque from "@/components/createSecurityCheque";
 import SecurityChequesViewUser from "@/components/SecurityChequesViewUser";
 import AdminPropertyList from "@/components/adminPropertyList";
 import PendingRequestsPage from "@/components/pendingRequest";
+import { apiClient } from "@/lib/api";
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+
+  const [role, setRole] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
   const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [profits, setProfits] = useState<any[]>([]);
+  const [loadingProfits, setLoadingProfits] = useState(true);
 
+  const fetchMyProfits = async () => {
+    try {
+      const data = await apiClient.get("/my-profit");
+      setProfits(data);
+    } catch (error) {
+      console.error("Failed to fetch profits", error);
+    } finally {
+      setLoadingProfits(false);
+    }
+  };
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
+    const cookies = document.cookie.split("; ");
 
-    if (!user || !token) {
+    const getCookie = (name: string) =>
+      cookies.find((c) => c.startsWith(name + "="))?.split("=")[1];
+
+    const token = getCookie("token");
+    const role = getCookie("role");
+    const username = getCookie("username");
+
+    if (!token || !role) {
       router.push("/");
       return;
     }
 
-    const parsedUser = JSON.parse(user);
-    setName(parsedUser.username);
-    setRole(parsedUser.role);
+    setRole(role);
+    setUsername(username || "");
   }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    router.push("/");
-  };
+  useEffect(() => {
+    if (activeMenu === "dashboard") {
+      fetchMyProfits();
+    }
+  }, [activeMenu]);
+
+  if (!role) return null;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-slate-100">
       <Sidebar
+        role={role}
         activeMenu={activeMenu}
         setActiveMenu={setActiveMenu}
-        username={name}
-        role={role}
-        onLogout={handleLogout} />
+      />
 
       <main className="flex-1 p-8">
         {activeMenu === "dashboard" && (
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-4">
-              Welcome, <span className="text-blue-600">{name}</span>
+          <>
+            <h1 className="text-3xl font-bold text-slate-800">
+              Dashboard
             </h1>
-            <p className="text-gray-600 mb-6">Here you can track your investments and property details.</p>
+            <p className="text-slate-500 mt-1 mb-8">
+              Welcome back,{" "}
+              <span className="font-medium">{username}</span>
+            </p>
+            {loadingProfits ? (
+              <p className="text-slate-500">Loading profits...</p>
+            ) : profits.length === 0 ? (
+              <p className="text-slate-500">
+                No profits distributed yet.
+              </p>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                {profits.map((item) => (
+                  <div
+                    key={item._id}
+                    className="rounded-xl border p-5 bg-green-50 shadow-sm"
+                  >
+                    <p className="text-sm text-slate-500">
+                      Total Profit :{" "}
+                      <span className="font-semibold text-green-700">
+                        Rs {item.profitAmount}
+                      </span>
+                    </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveMenu("investments")}
-              >
-                <Wallet size={48} className="text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">View Investments</h3>
-                <p className="text-gray-600">Check all your property investments</p>
+                    <p className="text-sm text-slate-700">
+                      Total Payout:{" "}
+                      <span className="font-semibold">
+                        Rs {item.totalPayout}
+                      </span>
+                    </p>
+
+                    <p className="text-xs text-slate-400 mt-2">
+                      Distributed on{" "}
+                      {new Date(item.profitDistributionId.distributionDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
               </div>
-            </div>
-          </div>
+            )}
+          </>
         )}
-
         {activeMenu === "investments" && <InvestmentsView />}
         {activeMenu === "cheques" && <SecurityChequesViewUser />}
         {activeMenu === "create-property" && <CreatePropertyForm />}
-        {activeMenu === "create-security-cheque" && <CreateSecurityCheque />}
         {activeMenu === "pending-requests" && <PendingRequestsPage />}
         {activeMenu === "manage-properties" && <AdminPropertyList />}
 
         {activeMenu === "profile" && (
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">Your Profile</h2>
-            <div className="bg-white p-6 rounded-xl shadow-md">
-              <p className="text-gray-600">Update your personal info or change your password here.</p>
+          <div className="max-w-2xl">
+            <h2 className="text-2xl font-semibold mb-4">
+              Profile
+            </h2>
+            <div className="bg-white rounded-xl p-6 shadow-sm border">
+              <p className="text-slate-500">
+                Update your personal information and security settings.
+              </p>
             </div>
           </div>
         )}

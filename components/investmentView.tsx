@@ -53,7 +53,7 @@ export default function InvestmentsView() {
 
   const fetchInvestments = async () => {
     try {
-      const data = await apiClient.get("/investments");
+      const data = await apiClient.get("/userInvestments");
       if (data.success && data.data) {
         setInvestments(data.data);
       } else if (data.data && Array.isArray(data.data)) {
