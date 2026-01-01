@@ -18,27 +18,6 @@ export default function LoginForm() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
   });
-
-//   const onSubmit = async (data: LoginFormValues) => {
-//     try {
-//       const res = await axios.post(
-//         `${process.env.NEXT_PUBLIC_API_URL}/login`,
-//         {
-//           email: data.emailOrUsername,
-//           username: data.emailOrUsername,
-//           password: data.password,
-//         }
-//       );
-//       // Cookies.set("token", res.data.token);
-//       // Cookies.set("user", JSON.stringify(res.data.user));
-//       Cookies.set("token", res.data.token);
-// Cookies.set("role", res.data.user.role);
-// Cookies.set("username", res.data.user.username);
-//       router.push("/dashboard");
-//     } catch (err: any) {
-//       console.error(err);
-//     }
-//   };
 const onSubmit = async (data: LoginFormValues) => {
   try {
     const res = await axios.post(
@@ -100,24 +79,3 @@ const onSubmit = async (data: LoginFormValues) => {
 
   );
 }
-
-
-  // <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-    //   <Input placeholder="Email or Username" {...register("emailOrUsername")} />
-    //   {errors.emailOrUsername && (
-    //     <p className="text-red-500 text-sm">
-    //       {errors.emailOrUsername.message}
-    //     </p>
-    //   )}
-
-    //   <Input type="password" placeholder="Password" {...register("password")} />
-    //   {errors.password && (
-    //     <p className="text-red-500 text-sm">
-    //       {errors.password.message}
-    //     </p>
-    //   )}
-
-    //   <Button type="submit" className="w-20 cursor-pointer bg-white text-black hover:bg-white transition">
-    //     Login
-    //   </Button>
-    // </form>

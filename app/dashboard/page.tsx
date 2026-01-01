@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/sidebar";
@@ -12,7 +11,6 @@ import { apiClient } from "@/lib/api";
 
 export default function DashboardPage() {
   const router = useRouter();
-
   const [role, setRole] = useState<string | null>(null);
   const [username, setUsername] = useState("");
   const [activeMenu, setActiveMenu] = useState("dashboard");
