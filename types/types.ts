@@ -20,7 +20,7 @@ export interface Investment {
   _id: string;
   amount: number;
   investment_date: string;
-  status: "active" | "withdrawn" | "completed";
+  status: "active" | "withdrawn" | "completed" | "pending" | "approved" | "rejected";
   property: Property;
   listing: Listing;
 }

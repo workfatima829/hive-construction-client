@@ -114,22 +114,6 @@ export default function InvestmentCard({ investment, onWithdrawSuccess }: Invest
           <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(investment.status)}`}>
             {investment.status.toUpperCase()}
           </span>
-          
-          {investment.status === "active" && (
-            <button
-              onClick={handleWithdraw}
-              disabled={isDeleting}
-              className="p-2 rounded-full hover:bg-red-100 text-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
-              title="Withdraw Investment"
-            >
-              {isDeleting ? (
-                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600 inline-block"></span>
-              ) : (
-                <Trash2 size={16} />
-              )}
-            </button>
-          )}
-          
           {investment.listing && (
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPropertyStatusColor(investment.listing.status)}`}>
               {investment.listing.status.replace('_', ' ').toUpperCase()}
@@ -183,19 +167,38 @@ export default function InvestmentCard({ investment, onWithdrawSuccess }: Invest
           <div>
             <p className="text-sm text-gray-600 mb-1">Investment Date</p>
             <p className="font-semibold text-gray-800">
+              
               {new Date(investment.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
       )}
 
-      <div className="flex items-center gap-2 text-gray-500 text-sm pt-4 border-t">
+      <div className="flex justify-between gap-2 text-gray-500 text-sm pt-4 border-t ">
+        <div className="flex items-center gap-2 text-gray-500 text-sm">
         <Calendar size={16} />
         <span>Invested on {new Date(investment.createdAt).toLocaleDateString('en-US', { 
           year: 'numeric', 
           month: 'long', 
           day: 'numeric' 
         })}</span>
+      </div>
+      <div>
+          {investment.status === "active" && (
+            <button
+              onClick={handleWithdraw}
+              disabled={isDeleting}
+              className="p-2 rounded-full hover:bg-red-100 text-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Withdraw Investment"
+            >
+              {isDeleting ? (
+                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600 inline-block"></span>
+              ) : (
+                <Trash2 size={16} />
+              )}
+            </button>
+          )}
+      </div>
       </div>
     </div>
   );
