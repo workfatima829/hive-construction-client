@@ -40,10 +40,66 @@ export default function AuthPage() {
   return (
     <>
       {toast && <Toast message={toast.message} type={toast.type} />}
-      <main className="h-full bg-slate-100">
-        <section className="h-full grid lg:grid-cols-2">
+      <main className="min-h-screen bg-slate-100">
+        <section className="min-h-screen flex flex-col md:flex-row">
+          {/* Left Section - Auth Form (Shows first on mobile, left on tablet/desktop) */}
+          <div className="flex-1 flex items-center justify-center px-6 py-10 bg-white md:bg-slate-100">
+            <div className="w-full max-w-md">
+              {/* Logo - Only on mobile */}
+              <div className="md:hidden mb-8 text-center">
+                <button
+                  onClick={() => router.push("/")}
+                  className="inline-flex items-center gap-2 text-slate-900 font-semibold"
+                >
+                  <Sparkles className="h-5 w-5 text-amber-500" />
+                  <span className="text-lg">Hive Construction</span>
+                </button>
+              </div>
+
+              {/* Auth Card */}
+              <div className="rounded-2xl bg-white shadow-xl border border-slate-200 p-6 sm:p-8">
+                <div className="mb-6 text-center">
+                  <h2 className="text-2xl font-bold text-slate-900">
+                    {mode === "register" 
+                      ? "Create Your Account" 
+                      : mode === "forgot"
+                      ? "Reset Password"
+                      : "Welcome Back"}
+                  </h2>
+                  <p className="text-sm text-slate-500 mt-1">
+                    {mode === "register"
+                      ? "Register to start investing with Hive"
+                      : mode === "forgot"
+                      ? "Enter your email to reset password"
+                      : "Sign in to continue to your dashboard"}
+                  </p>
+                </div>
+
+                {mode === "login" && (
+                  <LoginForm
+                    onToggleMode={handleToggleMode}
+                    onForgotClick={() => setMode("forgot")}
+                    onShowToast={showToast}
+                  />
+                )}
+
+                {mode === "register" && (
+                  <RegisterForm onToggleMode={handleToggleMode} onShowToast={showToast} />
+                )}
+
+                {mode === "forgot" && (
+                  <ForgotPasswordForm
+                    onToggleMode={() => setMode("login")}
+                    onShowToast={showToast}
+                    onResetClick={() => setMode("login")}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+          {/* Desktop Left Panel - Hidden on mobile/tablet, shown on large desktop */}
           <div
-            className="relative hidden lg:flex overflow-hidden"
+            className="relative hidden lg:flex overflow-hidden lg:order-first"
             style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}
           >
             <div
@@ -56,7 +112,7 @@ export default function AuthPage() {
               <div>
                 <button
                   onClick={() => router.push("/")}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/20 transition cursor-pointer text-amber-500 "
+                  className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-sm font-medium hover:bg-white/20 transition cursor-pointer text-amber-500"
                 >
                   <Sparkles className="h-4 w-4" />
                   Hive Construction
@@ -86,43 +142,6 @@ export default function AuthPage() {
                     <span>Real-time property and profit tracking</span>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center px-6 py-10 sm:px-10">
-            <div className="w-full max-w-md">
-              <div className="rounded-2xl bg-white shadow-xl border border-slate-200 p-6 sm:p-8">
-                <div className="mb-6 text-center">
-                  <h2 className="text-2xl font-bold text-slate-900">
-                    {mode === "register" ? "Create Your Account" : "Welcome Back"}
-                  </h2>
-                  <p className="text-sm text-slate-500 mt-1">
-                    {mode === "register"
-                      ? "Register to start investing with Hive"
-                      : "Sign in to continue to your dashboard"}
-                  </p>
-                </div>
-
-                {mode === "login" && (
-                  <LoginForm
-                    onToggleMode={handleToggleMode}
-                    onForgotClick={() => setMode("forgot")}
-                    onShowToast={showToast}
-                  />
-                )}
-
-                {mode === "register" && (
-                  <RegisterForm onToggleMode={handleToggleMode} onShowToast={showToast} />
-                )}
-
-                {mode === "forgot" && (
-                  <ForgotPasswordForm
-                    onToggleMode={() => setMode("login")}
-                    onShowToast={showToast}
-                    onResetClick={() => setMode("login")}
-                  />
-                )}
               </div>
             </div>
           </div>
