@@ -72,7 +72,6 @@ export default function PrivacyPolicyPage() {
             <p className="text-white/85 max-w-2xl mx-auto text-base sm:text-lg">
               Hive Construction Ventures Advisor System
             </p>
-            <p className="text-white/70 text-sm mt-3">Effective Date: March 2, 2026</p>
           </div>
         </section>
 
