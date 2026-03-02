@@ -99,8 +99,8 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">Create Account</h2>
-      <p className="text-gray-600 mb-6">Join Hive Construction today</p>
+      <h2 className="text-2xl font-bold text-white mb-1">Create Account</h2>
+      <p className="text-gray-300 mb-6">Join Hive Construction today</p>
       
       <div className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
@@ -112,7 +112,7 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
               disabled={isLoading}
             />
             {errors.firstName && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1 text-left">
                 {errors.firstName.message}
               </p>
             )}
@@ -125,7 +125,7 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
               disabled={isLoading}
             />
             {errors.lastName && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-red-500 text-xs mt-1 text-left">
                 {errors.lastName.message}
               </p>
             )}
@@ -140,7 +140,7 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
             disabled={isLoading}
           />
           {errors.username && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1 text-left">
               {errors.username.message}
             </p>
           )}
@@ -155,7 +155,7 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
             disabled={isLoading}
           />
           {errors.email && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1 text-left">
               {errors.email.message}
             </p>
           )}
@@ -179,7 +179,7 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1 text-left">
               {errors.password.message}
             </p>
           )}
@@ -203,7 +203,7 @@ export default function RegisterForm({ onToggleMode, onShowToast }: RegisterForm
             </button>
           </div>
           {errors.confirmPassword && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1 text-left">
               {errors.confirmPassword.message}
             </p>
           )}

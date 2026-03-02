@@ -97,8 +97,8 @@ export default function LoginForm({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-1">Welcome Back</h2>
-      <p className="text-gray-600 mb-6">Sign in to your account to continue</p>
+      <h2 className="text-2xl font-bold text-white mb-1">Welcome Back</h2>
+      <p className="text-gray-300 mb-6">Sign in to your account to continue</p>
       
       <div className="space-y-4">
         <div>
@@ -109,7 +109,7 @@ export default function LoginForm({
             disabled={isLoading}
           />
           {errors.emailOrUsername && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1 text-left">
               {errors.emailOrUsername.message}
             </p>
           )}
@@ -133,7 +133,7 @@ export default function LoginForm({
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-red-500 text-xs mt-1 text-left">
               {errors.password.message}
             </p>
           )}

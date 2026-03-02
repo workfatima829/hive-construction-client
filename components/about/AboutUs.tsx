@@ -141,15 +141,18 @@ export default function AboutUs() {
           Sign in        </Button>
 
         {open && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="relative w-[400px] bg-gray-900 p-6 rounded-2xl text-white shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+            <div className="relative w-full max-w-[400px] max-h-[90vh] bg-gray-900 rounded-2xl text-white shadow-2xl overflow-hidden">
+              <div className="flex justify-end p-4 pb-0">
                 <button
-             onClick={() => setOpen(false)}
-              className="absolute -top-4 -right-4 bg-gray-800 hover:bg-red-500 text-white p-2 rounded-full shadow-lg transition cursor-pointer"
-            >
-              <X size={18} />
-            </button>
-            <div>
+                  onClick={() => setOpen(false)}
+                  className="bg-gray-800 hover:bg-red-500 text-white p-2 rounded-full shadow-lg transition cursor-pointer"
+                  aria-label="Close modal"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              <div className="px-6 pb-6 overflow-y-auto max-h-[calc(90vh-64px)] [scrollbar-width:thin] [scrollbar-color:#64748b_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-500/70 [&::-webkit-scrollbar-thumb]:rounded-full">
               {mode === "login" && (
                 <LoginForm
                   onToggleMode={handleToggleMode}
