@@ -1,3 +1,4 @@
+import { RegisterPayload } from "@/types/auth";
 import Cookies from "js-cookie";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -78,5 +79,110 @@ export const apiClient = {
     }
     
     return response.json();
+  },
+};
+
+export const getAuthHeader = () => {
+  const token = Cookies.get("token");
+  return {
+    "Content-Type": "application/json",
+    ...(token && { "Authorization": `Bearer ${token}` }),
+  };
+};
+
+export const authAPI = {
+  // Login
+  login: async (email: string, username: string, password: string) => {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, username, password }),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Login failed");
+    }
+    return res.json();
+  },
+
+  // Register
+  register: async (data: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    password: string;
+  }) => {
+    const res = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Registration failed");
+    }
+    return res.json();
+  },
+
+  // Verify Email
+  verifyEmail: async (token: string) => {
+    const res = await fetch(`${API_URL}/verify?token=${token}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Verification failed");
+    }
+    return res.json();
+  },
+
+  // Forgot Password
+  forgotPassword: async (email: string) => {
+    const res = await fetch(`${API_URL}/forgotPassword`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Failed to send reset link");
+    }
+    return res.json();
+  },
+  resetPassword: async (token: string, newPassword: string, confirmPassword: string) => {
+    const res = await fetch(`${API_URL}/resetPassword/${token}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ newPassword, confirmPassword }),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Password reset failed");
+    }
+    return res.json();
+  },
+
+  // Change Password (Protected)
+  changePassword: async (id: string, password: string) => {
+    const res = await fetch(`${API_URL}/updatePassword/${id}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ password }),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Password change failed");
+    }
+    return res.json();
+  },
+
+  // Logout
+  logout: () => {
+    Cookies.remove("token");
+    Cookies.remove("user");
+    Cookies.remove("role");
+    Cookies.remove("username");
   },
 };

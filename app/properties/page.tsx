@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PropertyCard from "@/components/propertyCard";
+import Navbar from "@/components/layout/Navbar";
 
 interface Property {
   _id: string;
@@ -38,6 +39,8 @@ export default function PropertiesPage() {
   }, []);
 
   return (
+    <>
+     <Navbar />
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
@@ -102,5 +105,6 @@ export default function PropertiesPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

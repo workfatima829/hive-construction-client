@@ -19,4 +19,3 @@ export default function WelcomePage() {
 
   return <div>Loading...</div>;
 }
-

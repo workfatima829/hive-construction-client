@@ -2,11 +2,23 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import RegistrationForm from "../auth/RegistrationForm";
+import RegisterForm from "../auth/RegistrationForm";
 import {X } from "lucide-react";
+import LoginForm from "../auth/LoginForm";
+import ForgotPasswordForm from "../auth/ForgetPassword";
 export default function AboutUs() {
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<"login" | "register" | "forgot">("login");
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
+  const handleToast = (message: string, type: "success" | "error") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleToggleMode = () => {
+    setMode((prev) => (prev === "login" ? "register" : "login"));
+  };
   const hiveSteps = [
     { title: "Browse Properties", desc: "View residential homes available for investment with complete details." },
     { title: "Invest Safely", desc: "Contribute any amount towards land or construction projects securely." },
@@ -44,6 +56,15 @@ export default function AboutUs() {
 
   return (
     <main className="bg-background text-foreground">
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-[60] rounded-lg px-6 py-3 text-white shadow-lg ${
+            toast.type === "error" ? "bg-red-500" : "bg-green-500"
+          }`}
+        >
+          {toast.message}
+        </div>
+      )}
 
       {/* Mission & Vision */}
       <section className="py-16 px-6 md:px-20 max-w-6xl mx-auto text-center">
@@ -99,10 +120,25 @@ export default function AboutUs() {
           variant="default"
           className="text-white cursor-pointer"
           style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setMode("register");
+            setOpen(true);
+          }}
         >
-          Sign Up Now
+          Start your journey
         </Button>
+         <Button
+          size="lg"
+          variant="default"
+          className="text-white cursor-pointer 
+          ml-4"
+          style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)" }}
+          onClick={() => {
+            setMode("login");
+            setOpen(true);
+          }}
+        >
+          Sign in        </Button>
 
         {open && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -113,12 +149,32 @@ export default function AboutUs() {
             >
               <X size={18} />
             </button>
-              <RegistrationForm />
+            <div>
+              {mode === "login" && (
+                <LoginForm
+                  onToggleMode={handleToggleMode}
+                  onForgotClick={() => setMode("forgot")}
+                  onShowToast={handleToast}
+                />
+              )}
+              {mode === "register" && (
+                <RegisterForm
+                  onToggleMode={handleToggleMode}
+                  onShowToast={handleToast}
+                />
+              )}
+              {mode === "forgot" && (
+                <ForgotPasswordForm
+                  onToggleMode={() => setMode("login")}
+                  onShowToast={handleToast}
+                  onResetClick={() => setMode("login")}
+                />
+              )}
+            </div>
             </div>
           </div>
         )}
       </section>
-
     </main>
   );
 }

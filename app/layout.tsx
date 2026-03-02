@@ -7,7 +7,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-gray-50">
         <Providers>
-          <Navbar />
           <main>{children}</main>
         </Providers>
       </body>

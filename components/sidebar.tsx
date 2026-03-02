@@ -27,7 +27,6 @@ export default function Sidebar({
   const adminMenu = [
     { id: "create-property", label: "Create Property", icon: PlusCircle },
     { id: "manage-properties", label: "Manage Properties", icon: Home },
-    { id: "pending-requests", label: "Pending Requests", icon: FileText },
   ];
 
   const menuItems =
