@@ -97,8 +97,7 @@ export default function LoginForm({
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-white mb-1">Welcome Back</h2>
-      <p className="text-gray-300 mb-6">Sign in to your account to continue</p>
+
       
       <div className="space-y-4">
         <div>
@@ -127,7 +126,7 @@ export default function LoginForm({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 cursor-pointer"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -142,7 +141,7 @@ export default function LoginForm({
         <button
           type="button"
           onClick={onForgotClick}
-          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+          className="text-sm text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
         >
           Forgot password?
         </button>
@@ -151,7 +150,7 @@ export default function LoginForm({
           type="button"
           onClick={handleSubmit(onSubmit)}
           disabled={isLoading}
-          className="w-full h-11 rounded-lg text-white font-semibold"
+          className="w-full h-11 rounded-lg text-white font-semibold cursor-pointer"
           style={{background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)'}}
         >
           {isLoading ? "Signing in..." : "Sign in"}
@@ -162,7 +161,7 @@ export default function LoginForm({
         Don't have an account?{" "}
         <button
           onClick={onToggleMode}
-          className="font-semibold text-blue-600 hover:text-blue-700"
+          className="font-semibold text-blue-600 hover:text-blue-700 cursor-pointer"
         >
           Create one
         </button>
