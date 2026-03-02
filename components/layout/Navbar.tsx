@@ -17,7 +17,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full shadow-lg sticky top-0 z-50" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' }}>
+    <nav className="w-full shadow-lg sticky top-0 z-50 relative" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
@@ -57,11 +57,11 @@ export default function Navbar() {
         </div>
       </div>
       {isOpen && (
-        <div 
-          className="md:hidden shadow-lg backdrop-blur-lg"
+        <div
+          className="md:hidden absolute top-full left-0 right-0 shadow-lg backdrop-blur-lg border-t border-white/10"
           style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' }}
         >
-          <div className="px-4 pt-2 pb-4 space-y-3">
+          <div className="px-4 pt-3 pb-4 space-y-3">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
