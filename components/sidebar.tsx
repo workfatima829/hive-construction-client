@@ -42,7 +42,7 @@ export default function Sidebar({
   };
 
   return (
-    <aside className="w-64 h-screen bg-slate-900 text-white p-4">
+  <aside className="w-64 h-screen bg-slate-900 text-white p-4">
       <nav className="space-y-1">
         {menuItems.map((item) => {
           const Icon = item.icon;

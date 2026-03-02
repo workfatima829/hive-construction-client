@@ -181,7 +181,7 @@ export default function DashboardPage() {
   if (!role) return null;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-100">
+    <div className="flex min-h-full bg-slate-100">
       {/* Sidebar - Fixed, No Scroll */}
       <Sidebar
         role={role}
@@ -189,8 +189,8 @@ export default function DashboardPage() {
         setActiveMenu={setActiveMenu}
       />
 
-      {/* Main Content - Scrollable */}
-      <main className="flex-1 overflow-y-auto p-8">
+      {/* Main Content */}
+      <main className="flex-1 p-8">
         {activeMenu === "dashboard" && (
           <>
             <h1 className="text-3xl font-bold text-slate-800">
