@@ -92,7 +92,7 @@ export default function DashboardPage() {
 
       <section className="flex-1 min-w-0 flex flex-col">
         <header className="h-20 shrink-0 border-b border-slate-200 bg-white px-6 flex items-center justify-end">
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="h-12 w-12 rounded-full bg-slate-200 text-slate-900 font-semibold text-xl hover:bg-slate-300 transition">
                 {(username?.[0] || "U").toUpperCase()}
@@ -119,7 +119,65 @@ export default function DashboardPage() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </header>
+        </header> */}
+        <DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <button className="relative h-10 w-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-white font-semibold text-sm hover:shadow-lg hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2">
+      {(username?.[0] || "U").toUpperCase()}
+    </button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent align="end" className="w-72 p-0 rounded-2xl border border-slate-200 shadow-2xl overflow-hidden bg-white">
+    {/* User Info Header */}
+    <DropdownMenuLabel className="px-5 py-4 bg-gradient-to-br from-slate-50 to-white border-b border-slate-100">
+      <div className="flex items-center gap-3">
+        <div className="h-12 w-12 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-white font-bold text-lg flex items-center justify-center shadow-md">
+          {(username?.[0] || "U").toUpperCase()}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-slate-900 truncate">{username || "User"}</p>
+          <p className="text-xs text-slate-500 truncate">{email || username}</p>
+        </div>
+      </div>
+    </DropdownMenuLabel>
+
+    {/* Menu Items */}
+    <div className="py-2">
+      <DropdownMenuItem
+        className="mx-2 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer hover:bg-slate-50 focus:bg-slate-50 transition-colors group"
+        onClick={() => setActiveMenu("profile")}
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center group-hover:bg-amber-100 transition-colors">
+            <svg className="w-4 h-4 text-slate-600 group-hover:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <span className="text-slate-700 group-hover:text-slate-900">Profile Settings</span>
+        </div>
+      </DropdownMenuItem>     
+    </div>
+
+    <DropdownMenuSeparator className="my-0" />
+
+    {/* Logout Button */}
+    <div className="p-2">
+      <DropdownMenuItem
+        className="mx-0 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer hover:bg-red-50 focus:bg-red-50 transition-colors group"
+        onClick={handleLogout}
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center group-hover:bg-red-100 transition-colors">
+            <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </div>
+          <span className="text-red-600 font-semibold">Logout</span>
+        </div>
+      </DropdownMenuItem>
+    </div>
+  </DropdownMenuContent>
+</DropdownMenu>
+ </header>
 
         <main className="flex-1 overflow-y-auto p-8">
           {activeMenu === "dashboard" && (
@@ -179,4 +237,6 @@ export default function DashboardPage() {
       </section>
     </div>
   );
+
 }
+
